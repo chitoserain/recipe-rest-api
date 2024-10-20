@@ -1,0 +1,1552 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Recipe REST API",
+    "description": "OpenAPI definition for the Recipe REST API",
+    "version": "1.0",
+    "contact": {
+      "email": "zytrahidayat11@gmail.com",
+      "url": "https://s.id/muhamad-citra"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api"
+    }
+  ],
+  "externalDocs": {
+    "url": "https://github.com/r-aozora/recipe-rest-api"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "UUID"
+      }
+    },
+    "parameters": {
+      "Authorization": {
+        "name": "Authorization",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "Bearer <accessToken>"
+      },
+      "Slug": {
+        "name": "slug",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Username": {
+        "name": "username",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "Categories": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Category"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "Recipes": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Recipe"
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "tips": {
+            "type": "string"
+          },
+          "energy": {
+            "type": "string"
+          },
+          "carbohydrate": {
+            "type": "string"
+          },
+          "protein": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "ratings_avg": {
+            "type": "number"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          }
+        }
+      },
+      "RecipeDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "tips": {
+            "type": "string"
+          },
+          "energy": {
+            "type": "string"
+          },
+          "carbohydrate": {
+            "type": "string"
+          },
+          "protein": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "ratings_avg": {
+            "type": "number"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "comment_author": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "InvalidToken": {
+        "description": "Invalid token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "success": false,
+              "message": "Invalid token"
+            }
+          }
+        }
+      },
+      "NotAdmin": {
+        "description": "Not admin try to access this endpoint",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "success": false,
+              "message": "Forbidden access"
+            }
+          }
+        }
+      },
+      "DeleteOtherUserRecipe": {
+        "description": "A user try to delete other user recipes",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "success": false,
+              "message": "Forbidden access"
+            }
+          }
+        }
+      },
+      "FailedRating": {
+        "description": "User try to rate own recipe or user has rated the recipe",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "examples": {
+              "user try to rate own recipe": {
+                "value": {
+                  "success": false,
+                  "message": "You cannot rate your own recipe"
+                }
+              },
+              "user has rated the recipe": {
+                "value": {
+                  "success": false,
+                  "message": "You have rated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "Categories": {
+        "value": {
+          "success": true,
+          "message": "Get all categories success",
+          "data": [
+            {
+              "id": 2,
+              "name": "Appetizer",
+              "slug": "appetizer"
+            },
+            {
+              "id": 6,
+              "name": "Condiment",
+              "slug": "condiment"
+            },
+            {
+              "id": 5,
+              "name": "Dessert",
+              "slug": "dessert"
+            },
+            {
+              "id": 1,
+              "name": "Main Dish",
+              "slug": "main-dish"
+            }
+          ]
+        }
+      },
+      "Category": {
+        "value": {
+          "success": true,
+          "message": "Category created",
+          "data": {
+            "id": 1,
+            "name": "Main Dish",
+            "slug": "main-dish"
+          }
+        }
+      },
+      "Recipes": {
+        "value": {
+          "success": true,
+          "message": "Get all recipes success",
+          "data": [
+            {
+              "id": 1,
+              "title": "Nasi Goreng",
+              "slug": "nasi-goreng",
+              "ingredients": "Beef or chicken...",
+              "method": "Boil or steam potato...",
+              "tips": "Use cold leftover rice...",
+              "energy": "300 kcal",
+              "carbohydrate": "45g",
+              "protein": "10g",
+              "thumbnail": "<VALID_IMAGE_URL>",
+              "created_at": "2023-08-11 10:56:05",
+              "author": "user39",
+              "ratings_avg": 2.7,
+              "category": {
+                "id": 1,
+                "name": "Main Dish",
+                "slug": "main-dish"
+              }
+            }
+          ]
+        }
+      },
+      "Recipe": {
+        "value": {
+          "success": true,
+          "message": "Recipe created",
+          "data": {
+            "id": 1,
+            "title": "Nasi Goreng",
+            "slug": "nasi-goreng",
+            "ingredients": "Beef or chicken...",
+            "method": "Boil or steam potato...",
+            "tips": "Use cold leftover rice...",
+            "energy": "300 kcal",
+            "carbohydrate": "45g",
+            "protein": "10g",
+            "thumbnail": "<VALID_IMAGE_URL>",
+            "created_at": "2023-08-11 10:56:05",
+            "author": "user39",
+            "ratings_avg": 0,
+            "category": {
+              "id": 1,
+              "name": "Main Dish",
+              "slug": "main-dish"
+            }
+          }
+        }
+      },
+      "RecipeDetail": {
+        "value": {
+          "success": true,
+          "message": "Get recipe detail success",
+          "data": {
+            "id": 1,
+            "title": "Nasi Goreng",
+            "slug": "nasi-goreng",
+            "ingredients": "Beef or chicken...",
+            "method": "Boil or steam potato...",
+            "tips": "Use cold leftover rice...",
+            "energy": "300 kcal",
+            "carbohydrate": "45g",
+            "protein": "10g",
+            "thumbnail": "<VALID_IMAGE_URL>",
+            "created_at": "2023-08-11 10:56:05",
+            "author": "user39",
+            "ratings_avg": 2.7,
+            "category": {
+              "id": 1,
+              "name": "Main Dish",
+              "slug": "main-dish"
+            },
+            "comments": [
+              {
+                "id": 44,
+                "comment": "Food was so delicious...",
+                "created_at": "2023-08-14 04:01:20",
+                "comment_author": "user46"
+              }
+            ]
+          }
+        }
+      },
+      "Profile": {
+        "value": {
+          "success": true,
+          "message": "Get profile success",
+          "data": {
+            "id": 1,
+            "name": "Jane Doe",
+            "username": "jane.doe",
+            "email": "jane.doe@example.com",
+            "role": "user",
+            "recipes": [
+              {
+                "id": 1,
+                "title": "Nasi Goreng",
+                "slug": "nasi-goreng",
+                "ingredients": "Beef or chicken...",
+                "method": "Boil or steam potato...",
+                "tips": "Use cold leftover rice...",
+                "energy": "300 kcal",
+                "carbohydrate": "45g",
+                "protein": "10g",
+                "thumbnail": "<VALID_IMAGE_URL>",
+                "created_at": "2023-08-11 10:56:05",
+                "author": "user39",
+                "ratings_avg": 2.7,
+                "category": {
+                  "id": 1,
+                  "name": "Main Dish",
+                  "slug": "main-dish"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/categories": {
+      "get": {
+        "tags": [
+          "Discover categories and recipes"
+        ],
+        "summary": "Get all categories",
+        "description": "This endpoint return all of the existing categories and sorted by name ascending.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Categories"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/Categories"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Category management"
+        ],
+        "summary": "Create category",
+        "description": "For admin to create a recipe category.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "slug"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "Main Dish",
+                "slug": "main-dish"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Category"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/Category"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "errors": {
+                        "name": [
+                          "The name field is required."
+                        ],
+                        "slug": [
+                          "The slug field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/NotAdmin"
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/categories/{slug}": {
+      "delete": {
+        "tags": [
+          "Category management"
+        ],
+        "summary": "Delete category",
+        "description": "For admin to delete a recipe category.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Category deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/NotAdmin"
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": [
+          "Discover categories and recipes"
+        ],
+        "summary": "Get all recipes",
+        "description": "This endpoint return all of the existing recipes and sorted by created_at descending.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Recipes"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/Recipes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recipe management"
+        ],
+        "summary": "Create recipe",
+        "description": "For logged in users to create a recipe.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "category_id",
+                  "ingredients",
+                  "method",
+                  "tips",
+                  "energy",
+                  "carbohydrate",
+                  "protein"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "category_id": {
+                    "type": "integer"
+                  },
+                  "ingredients": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "type": "string"
+                  },
+                  "tips": {
+                    "type": "string"
+                  },
+                  "energy": {
+                    "type": "string"
+                  },
+                  "carbohydrate": {
+                    "type": "string"
+                  },
+                  "protein": {
+                    "type": "string"
+                  },
+                  "thumbnail": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "title": "Nasi Goreng",
+                "category_id": 1,
+                "ingredients": "Beef or chicken...",
+                "method": "Boil or steam potato...",
+                "tips": "Use cold leftover rice...",
+                "energy": "300 kcal",
+                "carbohydrate": "45g",
+                "protein": "10g",
+                "thumbnail": "<VALID_IMAGE_URL>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Recipe"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/Recipe"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "error": {
+                        "title": [
+                          "The title field is required."
+                        ],
+                        "category_id": [
+                          "The category id field is required."
+                        ],
+                        "ingredients": [
+                          "The ingredients field is required."
+                        ],
+                        "method": [
+                          "The method field is required."
+                        ],
+                        "tips": [
+                          "The tips field is required."
+                        ],
+                        "energy": [
+                          "The energy field is required."
+                        ],
+                        "carbohydrate": [
+                          "The carbohydrate field is required."
+                        ],
+                        "protein": [
+                          "The protein field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/recipes/{slug}": {
+      "get": {
+        "tags": [
+          "Discover categories and recipes"
+        ],
+        "summary": "Detail recipe",
+        "description": "This endpoint return a single recipe data based slug parameter.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RecipeDetail"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/RecipeDetail"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Recipe management"
+        ],
+        "summary": "Delete recipe",
+        "description": "For logged in users to delete a recipe.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Recipe deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/DeleteOtherUserRecipe"
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/best-recipes": {
+      "get": {
+        "tags": [
+          "Discover categories and recipes"
+        ],
+        "summary": "Get top best recipes",
+        "description": "This endpoint return 3 recipes with the highest average rating.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Recipes"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/Recipes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Register",
+        "description": "For guest users to register themselves to the system. The access token be generated by UUID.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "username",
+                  "email",
+                  "password",
+                  "password_confirmation"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirmation": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "Jane Doe",
+                "username": "jane.doe",
+                "email": "jane.doe@example.com",
+                "password": "password",
+                "password_confirmation": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Register success",
+                      "data": {
+                        "accessToken": "<UUID>"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "errors": {
+                        "name": [
+                          "The name field is required."
+                        ],
+                        "username": [
+                          "The username field is required."
+                        ],
+                        "email": [
+                          "The email field is required."
+                        ],
+                        "password": [
+                          "The password field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login",
+        "description": "For guest users to sign into the system with existing credentials. The access token be generated by UUID.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "jane.doe",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Login success",
+                      "data": {
+                        "accessToken": "<UUID>"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object",
+                      "properties": {
+                        "credentials": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "failed": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid credentials",
+                      "errors": {
+                        "credentials": "The username or password is incorrect."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout",
+        "description": "For logged in users to sign out from the system.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Logout success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get profile",
+        "description": "For guest users to get their profile data (username and their created recipes).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Username"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "recipes": {
+                          "$ref": "#/components/schemas/Recipes"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/Profile"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/recipes/{slug}/rating": {
+      "post": {
+        "tags": [
+          "Rating and Comment"
+        ],
+        "summary": "Rating",
+        "description": "For logged in users to rate other user recipes. Users cannot rate recipes they have created and cannot rate a recipe 2 times.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Slug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "rating"
+                ],
+                "properties": {
+                  "rating": {
+                    "type": "number"
+                  }
+                }
+              },
+              "example": {
+                "rating": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Rating success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "errors": {
+                        "rating": [
+                          "The rating field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/FailedRating"
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    },
+    "/recipes/{slug}/comment": {
+      "post": {
+        "tags": [
+          "Rating and Comment"
+        ],
+        "summary": "Comment",
+        "description": "For logged in users to post a comment on a recipe.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "$ref": "#/components/parameters/Slug"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "comment"
+                ],
+                "properties": {
+                  "comment": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "comment": "Food was so delicious..."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "success": true,
+                      "message": "Comment success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/InvalidToken"
+          }
+        }
+      }
+    }
+  }
+}

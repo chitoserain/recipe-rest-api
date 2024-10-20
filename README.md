@@ -1,11 +1,13 @@
 # Recipe REST API
 
-## Ringkasan
+EN | [ID](README_ID.md)
 
-Proyek ini disusun semata-mata sebagai latihan pribadi dalam mengimplementasikan REST API dengan menggunakan Framework PHP, yakni Laravel.
+## Summary
 
-Inspirasinya datang dari Proyek Uji Modul Teknologi Web Modul A - Pengembangan Backend, yang merupakan bagian dari Lomba Kompetensi Siswa (LKS) Tingkat Kota Tangerang tahun 2024.
+This project was created as a personal exercise in implementing REST API using PHP Framework, Laravel.
+
+The inspiration came from Test Project Web Technologies Module A - Backend Development, which is part of the Lomba Kompetensi Siswa (LKS) Tingkat Kota Tangerang in 2024.
 
 ## Endpoint
 
-Silakan buka file ```docs/v1/recipe-rest-api.json``` di [Swagger Editor](https://editor-next.swagger.io/) untuk informasi lebih lanjut mengenai endpoint-endpoint yang tersedia dalam proyek ini.
+Please open the file ```docs/recipe-rest-api.json``` in [Swagger Editor](https://editor-next.swagger.io/) for more information about the endpoints available in this project.
