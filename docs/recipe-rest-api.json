@@ -239,32 +239,6 @@
           }
         }
       },
-      "InvalidField": {
-        "description": "Invalid field",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "errors": {
-                  "type": "object"
-                }
-              }
-            },
-            "example": {
-              "success": false,
-              "message": "Invalid field",
-              "errors": {}
-            }
-          }
-        }
-      },
       "DeleteOtherUserRecipe": {
         "description": "A user try to delete other user recipes",
         "content": {
@@ -367,7 +341,7 @@
           "data": [
             {
               "id": 1,
-              "name": "Nasi Goreng",
+              "title": "Nasi Goreng",
               "slug": "nasi-goreng",
               "ingredients": "Beef or chicken...",
               "method": "Boil or steam potato...",
@@ -394,7 +368,7 @@
           "message": "Recipe created",
           "data": {
             "id": 1,
-            "name": "Nasi Goreng",
+            "title": "Nasi Goreng",
             "slug": "nasi-goreng",
             "ingredients": "Beef or chicken...",
             "method": "Boil or steam potato...",
@@ -420,7 +394,7 @@
           "message": "Get recipe detail success",
           "data": {
             "id": 1,
-            "name": "Nasi Goreng",
+            "title": "Nasi Goreng",
             "slug": "nasi-goreng",
             "ingredients": "Beef or chicken...",
             "method": "Boil or steam potato...",
@@ -461,7 +435,7 @@
             "recipes": [
               {
                 "id": 1,
-                "name": "Nasi Goreng",
+                "title": "Nasi Goreng",
                 "slug": "nasi-goreng",
                 "ingredients": "Beef or chicken...",
                 "method": "Boil or steam potato...",
@@ -592,7 +566,41 @@
             }
           },
           "422": {
-            "$ref": "#/components/responses/InvalidField"
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "errors": {
+                        "name": [
+                          "The name field is required."
+                        ],
+                        "slug": [
+                          "The slug field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
             "$ref": "#/components/responses/NotAdmin"
@@ -725,11 +733,10 @@
                   "tips",
                   "energy",
                   "carbohydrate",
-                  "protein",
-                  "thumbnail"
+                  "protein"
                 ],
                 "properties": {
-                  "name": {
+                  "title": {
                     "type": "string"
                   },
                   "category_id": {
@@ -800,7 +807,56 @@
             }
           },
           "422": {
-            "$ref": "#/components/responses/InvalidField"
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "error": {
+                        "title": [
+                          "The title field is required."
+                        ],
+                        "category_id": [
+                          "The category id field is required."
+                        ],
+                        "ingredients": [
+                          "The ingredients field is required."
+                        ],
+                        "method": [
+                          "The method field is required."
+                        ],
+                        "tips": [
+                          "The tips field is required."
+                        ],
+                        "energy": [
+                          "The energy field is required."
+                        ],
+                        "carbohydrate": [
+                          "The carbohydrate field is required."
+                        ],
+                        "protein": [
+                          "The protein field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/responses/InvalidToken"
@@ -1376,7 +1432,38 @@
             }
           },
           "422": {
-            "$ref": "#/components/responses/InvalidField"
+            "description": "Invalid field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid": {
+                    "value": {
+                      "success": false,
+                      "message": "Invalid field",
+                      "errors": {
+                        "rating": [
+                          "The rating field is required."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
             "$ref": "#/components/responses/FailedRating"
